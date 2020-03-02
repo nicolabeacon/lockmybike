@@ -1,0 +1,17 @@
+{
+  "name": "npm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify ../js/custom.js -o bundle.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "leaflet-geosearch": "^2.7.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.0"
+  }
+}
