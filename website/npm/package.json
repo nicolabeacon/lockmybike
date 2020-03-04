@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "leaflet-geosearch": "^2.7.0"
   },
   "devDependencies": {
