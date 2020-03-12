@@ -129,10 +129,17 @@
 			}
 
 			this._geocodeMarker = new L.Marker(result.center)
-				.bindPopup(result.name)
+			    .bindPopup(result.name)
 				.addTo(this._map)
 				.openPopup();
-
+				
+	// tests below
+if ($('.leaflet-control-ocd-search-form:contains(02109)')) {
+			console.log (result.name);
+} else {
+	console.log('try again');
+}
+// end of test
 			return this;
 		},
 
