@@ -1,19 +1,3 @@
-// testing Geosearch Leaflet plugin
-
-/*
-import L from 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js';
-import { GeoSearchControl, OpenStreetMapProvider } from '../npm/node_modules/leaflet-geosearch';
-
-const provider = new OpenStreetMapProvider();
-
-searchControl = new GeoSearchControl({
-  provider: provider,
-});
-
-mymap.addControl(searchControl);
-
-*/
-
 // custom JS code
 var mymap;
 var lyrOSM;
@@ -35,23 +19,36 @@ $(document).ready(function() {
     }
   ).addTo(mymap);
 
+  
+  // ?? add a filter function using .filter Leaflet method; filter based on zip will wrap all the marker displaying code. OR fetch zipcode and display a layer (multiple geoJSON files needed, one per zipcode)
   // load GeoJSON from an external file
   $.getJSON('../bikedatashort.geojson', function(data) {
     //add custom icons
     var rackIcon = L.icon({
       iconUrl: '../images/bikeRing.png',
-      iconSize: [50, 28]
+      iconSize: [60, 33.6]
     });
+  
+  // add this filter along with the whole add markers shebang from function markGeocode 
+    function zipFilter(feature) {
+   if (feature.properties.zip !== '02116') return true;
+ } 
+    
     // add GeoJSON layer to the map once the file is loaded
     L.geoJson(data, {
-      pointToLayer: function(feature, latlng) {
-        return L.marker(latlng, {
-          icon: rackIcon
-        });
-      }
-    }).addTo(mymap);
-  });
+ pointToLayer: function(feature, latlng) {
+   return L.marker(latlng, {
+     icon: rackIcon
+   });
+ },
+ onEachFeature: function(feature, layer) {
+   layer.bindPopup('Address:' + '&nbsp' + feature.properties.rack_street_address);
+ } , 
+ filter: zipFilter, 
+ }).addTo(mymap);   
+ });
 
+  
   // build a sidebar
 
   sidebar = L.control.sidebar('sidebar', {
@@ -103,6 +100,7 @@ $(document).ready(function() {
   });
   */
 
+  
  /* $('#searchBox').change(function(e) {
     // Load your JSON data
     // Search by input
