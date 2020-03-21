@@ -22,32 +22,9 @@ $(document).ready(function() {
   
   // ?? add a filter function using .filter Leaflet method; filter based on zip will wrap all the marker displaying code. OR fetch zipcode and display a layer (multiple geoJSON files needed, one per zipcode)
   // load GeoJSON from an external file
-  $.getJSON('../bikedatashort.geojson', function(data) {
-    //add custom icons
-    var rackIcon = L.icon({
-      iconUrl: '../images/bikeRing.png',
-      iconSize: [60, 33.6]
-    });
-  
-  // add this filter along with the whole add markers shebang from function markGeocode 
-    function zipFilter(feature) {
-   if (feature.properties.zip !== '02116') return true;
- } 
-    
-    // add GeoJSON layer to the map once the file is loaded
-    L.geoJson(data, {
- pointToLayer: function(feature, latlng) {
-   return L.marker(latlng, {
-     icon: rackIcon
-   });
- },
- onEachFeature: function(feature, layer) {
-   layer.bindPopup('Address:' + '&nbsp' + feature.properties.rack_street_address);
- } , 
- filter: zipFilter, 
- }).addTo(mymap);   
- });
+  // repaste here jquery getjson app to filter if necessary
 
+  // end of repaste here jquery getjson app to filter if necessary
   
   // build a sidebar
 
