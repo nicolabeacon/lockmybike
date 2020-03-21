@@ -1,3 +1,4 @@
+const validZip = /^[0-9]{5}(?:-[0-9]{4})?$/; 
 (function (factory) {
 	// Packaging/modules magic dance
 	var L;
@@ -133,9 +134,33 @@
 				.addTo(this._map)
 				.openPopup();
 				
-	// tests below
-if ($('.leaflet-control-ocd-search-form:contains(02109)')) {
-			console.log (result.name);
+	// tests below check check check
+if (validZip.test(result.name)) { 
+			  $.getJSON('../bikedatashort.geojson', function(data) {
+    //add custom icons
+    var rackIcon = L.icon({
+      iconUrl: '../images/bikeRing.png',
+      iconSize: [60, 33.6]
+    });
+  
+  // add this filter along with the whole add markers shebang from function markGeocode 
+    function zipFilter(feature) {
+   if (feature.properties.zip !== '02116') return true;
+ } 
+    
+    // add GeoJSON layer to the map once the file is loaded
+    L.geoJson(data, {
+ pointToLayer: function(feature, latlng) {
+   return L.marker(latlng, {
+     icon: rackIcon
+   });
+ },
+ onEachFeature: function(feature, layer) {
+   layer.bindPopup('Address:' + '&nbsp' + feature.properties.rack_street_address);
+ } , 
+ filter: zipFilter, 
+ }).addTo(mymap);   
+ });
 } else {
 	console.log('try again');
 }
