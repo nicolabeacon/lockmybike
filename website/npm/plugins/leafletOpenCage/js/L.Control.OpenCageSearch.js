@@ -1,4 +1,3 @@
-const validZip = /^[0-9]{5}(?:-[0-9]{4})?$/; 
 (function (factory) {
 	// Packaging/modules magic dance
 	var L;
@@ -121,6 +120,7 @@ const validZip = /^[0-9]{5}(?:-[0-9]{4})?$/;
 		markGeocode: function(result) {
 			if (result.bounds) {
 				this._map.fitBounds(result.bounds);
+				this._map.setZoom(15);
 			} else {
 				this._map.panTo(result.center);
 			}
@@ -134,8 +134,9 @@ const validZip = /^[0-9]{5}(?:-[0-9]{4})?$/;
 				.addTo(this._map)
 				.openPopup();
 				
-	// tests below check check check
-if (validZip.test(result.name)) { 
+	// check if there is a zipcode in the search box
+	// filtering using if(/^[0-9]{5}(?:-[0-9]{4})?$/.test(String(result.name))) does not work
+if (result.name) { 
 			  $.getJSON('../bikedatashort.geojson', function(data) {
     //add custom icons
     var rackIcon = L.icon({
@@ -145,7 +146,7 @@ if (validZip.test(result.name)) {
   
   // add this filter along with the whole add markers shebang from function markGeocode 
     function zipFilter(feature) {
-   if (feature.properties.zip !== '02116') return true;
+   if (feature.properties.zip !== '02116') return true;  // transform it into fetch that zipcode and display ONLY stations with the zip code the user entered
  } 
     
     // add GeoJSON layer to the map once the file is loaded
