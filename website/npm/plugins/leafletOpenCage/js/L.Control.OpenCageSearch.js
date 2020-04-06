@@ -135,44 +135,46 @@
 
     markGeocode: function(result) {
       if (result.bounds) {
-        this._map.fitBounds(result.bounds)
-        this._map.setZoom(15)
+        this._map.fitBounds(result.bounds);
+        this._map.setZoom(15);
       } else {
-        this._map.panTo(result.center)
+        this._map.panTo(result.center);
       }
 
       if (this._geocodeMarker) {
-        this._map.removeLayer(this._geocodeMarker)
+        this._map.removeLayer(this._geocodeMarker);
       }
 
       this._geocodeMarker = new L.Marker(result.center)
-        .bindPopup(result.name)
+      //.setIcon(rackIcon)
         .addTo(this._map)
-        .openPopup()
+        .openPopup();
+        
+    
 
       // check if there is a zipcode in the search box
       // filtering using if(/^[0-9]{5}(?:-[0-9]{4})?$/.test(String(result.name))) does not work
       if (result.name) {
-        var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/)
+        var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
         var zipCode =
-          parsedResults && parsedResults.groups && parsedResults.groups.zipCode
+          parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
 
         // TODO validate we have a valid US zipCode
 
-        $.getJSON('../bikedatashort.geojson', function(data) {
+        $.getJSON('../bikedata.geojson', function(data) {
           //add custom icons
-          var rackIcon = L.icon({
+            var rackIcon = L.icon({
             iconUrl: '../images/bikeRing.png',
             iconSize: [60, 33.6]
-          })
+          });
 
           var matchingRacks = data.features.filter(function(rack) {
-            return rack.properties.zip === zipCode
-          })
+            return rack.properties.zip === zipCode;
+          });
 
           // add this filter along with the whole add markers shebang from function markGeocode
           function zipFilter(feature) {
-            return feature.properties.zip === zipCode
+            return feature.properties.zip === zipCode;
           }
 
           // add GeoJSON layer to the map once the file is loaded
@@ -180,25 +182,25 @@
             pointToLayer: function(feature, latlng) {
               return L.marker(latlng, {
                 icon: rackIcon
-              })
+              });
             },
             onEachFeature: function(feature, layer) {
               layer.bindPopup(
                 'Address:' + '&nbsp' + feature.properties.rack_street_address
-              )
+              );
             },
             filter: zipFilter
           }).addTo(mymap)
-        })
+        });
       } else {
-        console.log('try again')
+        console.log('try again');
       }
       // end of test
-      return this
+      return this;
     },
 
     _geocode: function(event) {
-      L.DomEvent.preventDefault(event)
+      L.DomEvent.preventDefault(event);
 
       L.DomUtil.addClass(this._container, 'leaflet-control-ocd-search-spinner')
       this._clearResults()
