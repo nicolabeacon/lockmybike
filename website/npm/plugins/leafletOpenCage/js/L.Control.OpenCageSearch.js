@@ -1,5 +1,6 @@
 ;(function(factory) {
   // Packaging/modules magic dance
+  
   var L
   if (typeof define === 'function' && define.amd) {
     // AMD
@@ -145,15 +146,14 @@
         this._map.removeLayer(this._geocodeMarker);
       }
 
-      this._geocodeMarker = new L.Marker(result.center)
-      //.setIcon(rackIcon)
-        .addTo(this._map)
-        .openPopup();
-        
-    
+      this._geocodeMarker = L.marker(result.center, {icon: L.icon({
+            iconUrl: '../images/iconBike.png',
+            iconSize: [30, 30],
+            popupAnchor: [7, -9]
+          })}).addTo(this._map).bindPopup('Address: ' + result.name).openPopup();
+     
 
       // check if there is a zipcode in the search box
-      // filtering using if(/^[0-9]{5}(?:-[0-9]{4})?$/.test(String(result.name))) does not work
       if (result.name) {
         var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
         var zipCode =
@@ -188,6 +188,7 @@
               layer.bindPopup(
                 'Address:' + '&nbsp' + feature.properties.rack_street_address
               );
+              $("#current-location").html("<li>" + feature.properties.rack_street_address + "</li>");
             },
             filter: zipFilter
           }).addTo(mymap)

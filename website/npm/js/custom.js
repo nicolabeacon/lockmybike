@@ -113,19 +113,6 @@ $(document).ready(function() {
     position: 'topleft'
   }).addTo(mymap);
 
-  /*
-  $('#btnSearch').click(function(){
-   searchBoxVal = $('#searchBox').val();
-    console.log (searchBoxVal);
-  });
-  */
-
-
-  /* $('#searchBox').change(function(e) {
-     // Load your JSON data
-     // Search by input
-     // When find a match, pass the lat and longitude to the map
-   }); */
 });
 
 
