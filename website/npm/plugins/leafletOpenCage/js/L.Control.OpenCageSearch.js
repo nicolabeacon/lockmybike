@@ -188,10 +188,13 @@
               layer.bindPopup(
                 'Address:' + '&nbsp' + feature.properties.rack_street_address
               );
-              $("#current-location").html("<li>" + feature.properties.rack_street_address + "</li>");
+          
+          //  --------------iterate over array of racks found and print to sidebar info ------------
+              $("#current-location").append("<li>" + feature.properties.rack_street_address + "</li>");
+              sidebar.show();
             },
             filter: zipFilter
-          }).addTo(mymap)
+          }).addTo(mymap);
         });
       } else {
         console.log('try again');

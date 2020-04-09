@@ -36,7 +36,7 @@ $(document).ready(function() {
   // find your location adding a circle if button "locate" is pressed; also, handle location failure
 
 
-  /*
+
   
    $('#btnLocate').click(function() {
     mymap.locate();
@@ -44,29 +44,7 @@ $(document).ready(function() {
 
   mymap.on('locationfound', function(e) {
     console.log(e);
-    if (markerCurrentLocation) {
-      markerCurrentLocation.remove();
-    }
-    markerCurrentLocation = L.circleMarker(e.latlng).addTo(mymap);
-    mymap.setView(e.latlng, 15);
-    $('#current-location').html(e.latlng.toString());
-  });
-
-  mymap.on('locationerror', function(e) {
-    console.log(e);
-    alert('the location was not found');
-  });
-  
-  
-  */
-
-  // activate locate btn potential by showing markers close to my location
-  ///////////////// test test test ///////////////////////////
-
-
-  $('#btnLocate').click(function(e) {
-
-    $.getJSON('../bikedata.geojson', function(data) {
+        $.getJSON('../bikedata.geojson', function(data) {
       //add custom icons
       var rackIcon = L.icon({
         iconUrl: '../images/bikeRing.png',
@@ -90,14 +68,29 @@ $(document).ready(function() {
       rackIndex = leafletKnn(bikeRacks);
       mymap.fitBounds(bikeRacks.getBounds());
 
-      var nearestResult = rackIndex.nearest(e.latlng, 10)[100];
+      var nearestResult = rackIndex.nearest(e.latlng, 10);
 
-      nearestResult.layer.bindPopup("I'm nearest to where you clicked!").openPopup();
+      nearestResult.layer.bindPopup("I'm nearest to where you clicked!").openPopup(); // it's not part of the filter and scouped out of the layer creation
 
       console.log(nearestResult);
     });
-
+        
+    if (markerCurrentLocation) {
+      markerCurrentLocation.remove();
+    }
+    markerCurrentLocation = L.circleMarker(e.latlng).addTo(mymap);
+    mymap.setView(e.latlng, 15);
+    $('#current-location').html(e.latlng.toString());
   });
+
+  mymap.on('locationerror', function(e) {
+    console.log(e);
+    alert('the location was not found');
+  });
+  
+  
+  
+
 
 
 
