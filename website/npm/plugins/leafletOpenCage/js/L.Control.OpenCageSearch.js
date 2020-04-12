@@ -136,8 +136,11 @@
 
     markGeocode: function(result) {
       
-      // check if there is a zipcode in the search box
+      // the filtered layer that will be created once a zipcode match is found
       var lyrFiltered;
+      // does part of the address match a zipcode regular expression?
+      var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
+      var zipCode = parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
       
       if (result.bounds) {
         this._map.fitBounds(result.bounds);
@@ -166,9 +169,7 @@
      if (lyrFiltered) {
         map.removeLayer(lyrFiltered);
               if (result.name) {
-        var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
-        var zipCode =
-          parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
+      
 
         // TODO validate we have a valid US zipCode
 
@@ -183,7 +184,7 @@
             return rack.properties.zip === zipCode;
           });
 
-          // add this filter along with the whole add markers shebang from function markGeocode
+          // add this filter along with the whole add markers code from function markGeocode
           function zipFilter(feature) {
             return feature.properties.zip === zipCode;
           }
@@ -214,10 +215,7 @@
         console.log('try again');
       }
      } else {
-            if (result.name) {
-         var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
-         var zipCode =
-          parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
+            if (result.name) {        
         // TODO validate we have a valid US zipCode
 
         lyrFiltered = $.getJSON('../bikedata.geojson', function(data) {
@@ -231,7 +229,7 @@
             return rack.properties.zip === zipCode;
           });
 
-          // add this filter along with the whole add markers shebang from function markGeocode
+          // add this filter along with the whole add markers code from function markGeocode
           function zipFilter(feature) {
             return feature.properties.zip === zipCode;
           }
