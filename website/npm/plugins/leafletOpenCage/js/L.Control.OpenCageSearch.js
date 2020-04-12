@@ -1,4 +1,4 @@
-;(function(factory) {
+(function(factory) {
   // Packaging/modules magic dance
   
   var L
@@ -73,7 +73,7 @@
       this._alts = L.DomUtil.create(
         'ul',
         className +
-          '-alternatives leaflet-control-ocd-search-alternatives-minimized'
+        '-alternatives leaflet-control-ocd-search-alternatives-minimized'
       )
 
       form.appendChild(input)
@@ -135,6 +135,10 @@
     },
 
     markGeocode: function(result) {
+      
+      // check if there is a zipcode in the search box
+      var lyrFiltered;
+      
       if (result.bounds) {
         this._map.fitBounds(result.bounds);
         this._map.setZoom(15);
@@ -146,24 +150,31 @@
         this._map.removeLayer(this._geocodeMarker);
       }
 
-      this._geocodeMarker = L.marker(result.center, {icon: L.icon({
-            iconUrl: '../images/iconBike.png',
-            iconSize: [30, 30],
-            popupAnchor: [7, -9]
-          })}).addTo(this._map).bindPopup('Address: ' + result.name).openPopup();
-     
+      this._geocodeMarker = L.marker(result.center, {
+        icon: L.icon({
+          iconUrl: '../images/iconBike.png',
+          iconSize: [30, 30],
+          popupAnchor: [7, -9]
+        })
+      }).addTo(this._map).bindPopup('Address: ' + result.name).openPopup();
 
-      // check if there is a zipcode in the search box
-      if (result.name) {
+
+   ////// if lyrFiltered defined mymap.removeLayer(lyrFiltered) then add it again
+   
+  /////// else add it
+     
+     if (lyrFiltered) {
+        map.removeLayer(lyrFiltered);
+              if (result.name) {
         var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
         var zipCode =
           parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
 
         // TODO validate we have a valid US zipCode
 
-        $.getJSON('../bikedata.geojson', function(data) {
+        lyrFiltered = $.getJSON('../bikedata.geojson', function(data) {
           //add custom icons
-            var rackIcon = L.icon({
+          var rackIcon = L.icon({
             iconUrl: '../images/bikeRing.png',
             iconSize: [60, 33.6]
           });
@@ -186,20 +197,73 @@
             },
             onEachFeature: function(feature, layer) {
               layer.bindPopup(
-                'Address:' + '&nbsp' + feature.properties.rack_street_address
+                'Address:' + '&nbsp' + feature.properties.rack_street_address + '&nbsp' + feature.properties.zip
               );
+
+              //  --------------iterate over array of racks found and print to sidebar info ------------
+         
+          $("#listOfData").append("<li>" + feature.properties.rack_street_address + "</li>");
+          sidebar.show();
           
-          //  --------------iterate over array of racks found and print to sidebar info ------------
-              $("#current-location").append("<li>" + feature.properties.rack_street_address + "</li>");
-              sidebar.show();
             },
             filter: zipFilter
           }).addTo(mymap);
         });
+          
       } else {
         console.log('try again');
       }
-      // end of test
+     } else {
+            if (result.name) {
+         var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
+         var zipCode =
+          parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
+        // TODO validate we have a valid US zipCode
+
+        lyrFiltered = $.getJSON('../bikedata.geojson', function(data) {
+          //add custom icons
+          var rackIcon = L.icon({
+            iconUrl: '../images/bikeRing.png',
+            iconSize: [60, 33.6]
+          });
+
+          var matchingRacks = data.features.filter(function(rack) {
+            return rack.properties.zip === zipCode;
+          });
+
+          // add this filter along with the whole add markers shebang from function markGeocode
+          function zipFilter(feature) {
+            return feature.properties.zip === zipCode;
+          }
+
+          // add GeoJSON layer to the map once the file is loaded
+          L.geoJson(data, {
+            pointToLayer: function(feature, latlng) {
+              return L.marker(latlng, {
+                icon: rackIcon
+              });
+            },
+            onEachFeature: function(feature, layer) {
+              layer.bindPopup(
+                'Address:' + '&nbsp' + feature.properties.rack_street_address + '&nbsp' + feature.properties.zip
+              );
+
+              //  --------------iterate over array of racks found and print to sidebar info ------------
+         
+          $("#listOfData").append("<li>" + feature.properties.rack_street_address + "</li>");
+          sidebar.show();
+          
+            },
+            filter: zipFilter
+          }).addTo(mymap);
+        });
+         
+      } else {
+        console.log('try again');
+      }
+     }
+     
+      // end of search markers and append results to sidebar + clear previous results
       return this;
     },
 
@@ -286,9 +350,9 @@
         '<a href="#" data-result-index="' +
         index +
         '">' +
-        (this.options.showResultIcons && result.icon
-          ? '<img src="' + result.icon + '"/>'
-          : '') +
+        (this.options.showResultIcons && result.icon ?
+          '<img src="' + result.icon + '"/>' :
+          '') +
         result.name +
         '</a>'
       L.DomEvent.addListener(
@@ -333,12 +397,12 @@
           select(-1)
           L.DomEvent.preventDefault(e)
           break
-        // Up
+          // Up
         case 40:
           select(1)
           L.DomEvent.preventDefault(e)
           break
-        // Enter
+          // Enter
         case 13:
           if (this._selection) {
             var index = parseInt(
@@ -375,10 +439,14 @@
     script.src = url + L.Util.getParamString(params)
     script.id = callbackId
     script.addEventListener('error', function() {
-      callback({ results: [] })
+      callback({
+        results: []
+      })
     })
     script.addEventListener('abort', function() {
-      callback({ results: [] })
+      callback({
+        results: []
+      })
     })
     document.getElementsByTagName('head')[0].appendChild(script)
   }
@@ -405,8 +473,7 @@
 
       L.Control.OpenCageSearch.jsonp(
         this.options.serviceUrl + 'json/',
-        L.extend(
-          {
+        L.extend({
             q: query,
             limit: this.options.limit,
             key: this.options.key
@@ -455,3 +522,4 @@
 
   return L.Control.OpenCageSearch
 })
+

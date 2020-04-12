@@ -1,9 +1,11 @@
 // custom JS code
 var mymap;
 var lyrOSM;
+var lyrLocate;
 var markerCurrentLocation;
 var sidebar;
 var leafletSearch;
+
 
 $(document).ready(function() {
   mymap = L.map('map').setView([42.358918, -71.063828], 13);
@@ -80,7 +82,7 @@ $(document).ready(function() {
     }
     markerCurrentLocation = L.circleMarker(e.latlng).addTo(mymap);
     mymap.setView(e.latlng, 15);
-    $('#current-location').html(e.latlng.toString());
+    $('#listOfData').html(e.latlng.toString());
   });
 
   mymap.on('locationerror', function(e) {
