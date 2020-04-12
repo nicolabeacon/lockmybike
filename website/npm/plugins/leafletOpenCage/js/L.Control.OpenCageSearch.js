@@ -1,3 +1,6 @@
+ // the filtered layer that will be created once a zipcode match is found
+var lyrFiltered;
+      
 (function(factory) {
   // Packaging/modules magic dance
   
@@ -136,8 +139,7 @@
 
     markGeocode: function(result) {
       
-      // the filtered layer that will be created once a zipcode match is found
-      var lyrFiltered;
+
       // does part of the address match a zipcode regular expression?
       var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
       var zipCode = parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
@@ -167,13 +169,13 @@
   /////// else add it
      
      if (lyrFiltered) {
-        map.removeLayer(lyrFiltered);
+        mymap.removeLayer(lyrFiltered);
               if (result.name) {
       
 
         // TODO validate we have a valid US zipCode
 
-        lyrFiltered = $.getJSON('../bikedata.geojson', function(data) {
+          $.getJSON('../bikedata.geojson', function(data) {
           //add custom icons
           var rackIcon = L.icon({
             iconUrl: '../images/bikeRing.png',
@@ -190,7 +192,7 @@
           }
 
           // add GeoJSON layer to the map once the file is loaded
-          L.geoJson(data, {
+          lyrFiltered =  L.geoJson(data, {
             pointToLayer: function(feature, latlng) {
               return L.marker(latlng, {
                 icon: rackIcon
@@ -218,7 +220,7 @@
             if (result.name) {        
         // TODO validate we have a valid US zipCode
 
-        lyrFiltered = $.getJSON('../bikedata.geojson', function(data) {
+          $.getJSON('../bikedata.geojson', function(data) {
           //add custom icons
           var rackIcon = L.icon({
             iconUrl: '../images/bikeRing.png',
@@ -235,7 +237,7 @@
           }
 
           // add GeoJSON layer to the map once the file is loaded
-          L.geoJson(data, {
+          lyrFiltered = L.geoJson(data, {
             pointToLayer: function(feature, latlng) {
               return L.marker(latlng, {
                 icon: rackIcon
