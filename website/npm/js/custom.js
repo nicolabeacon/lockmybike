@@ -2,7 +2,7 @@
 var mymap;
 var lyrOSM;
 var lyrLocate;
-var markerCurrentLocation;
+var nearSpotsIndex;
 var sidebar;
 var leafletSearch;
 
@@ -37,7 +37,12 @@ $(document).ready(function() {
 
   // find your location adding a circle if button "locate" is pressed; also, handle location failure
 
-
+  
+    function nearbyMarkers(e , feature) {
+            nearSpotsIndex = leafletKnn(lyrLocate);
+            var nearestResult = nearSpotsIndex.nearest(e.latlng, 10);
+            return nearestResult.latlng === feature.latlng;
+          }
 
   
    $('#btnLocate').click(function() {
@@ -52,9 +57,9 @@ $(document).ready(function() {
         iconUrl: '../images/bikeRing.png',
         iconSize: [60, 33.6]
       });
-
+      
       // add GeoJSON layer to the map once the file is loaded
-      var bikeRacks = L.geoJson(data, {
+       lyrLocate = L.geoJson(data, {
         pointToLayer: function(feature, latlng) {
           return L.marker(latlng, {
             icon: rackIcon
@@ -64,25 +69,10 @@ $(document).ready(function() {
           layer.bindPopup(
             'Address:' + '&nbsp' + feature.properties.rack_street_address
           );
-        }
+        },
+        filter: nearbyMarkers
       }).addTo(mymap);
-
-      rackIndex = leafletKnn(bikeRacks);
-      mymap.fitBounds(bikeRacks.getBounds());
-
-      var nearestResult = rackIndex.nearest(e.latlng, 10);
-
-      nearestResult.layer.bindPopup("I'm nearest to where you clicked!").openPopup(); // it's not part of the filter and scouped out of the layer creation
-
-      console.log(nearestResult);
     });
-        
-    if (markerCurrentLocation) {
-      markerCurrentLocation.remove();
-    }
-    markerCurrentLocation = L.circleMarker(e.latlng).addTo(mymap);
-    mymap.setView(e.latlng, 15);
-    $('#listOfData').html(e.latlng.toString());
   });
 
   mymap.on('locationerror', function(e) {
