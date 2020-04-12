@@ -38,10 +38,10 @@ $(document).ready(function() {
   // find your location adding a circle if button "locate" is pressed; also, handle location failure
 
   
-    function nearbyMarkers(e , feature) {
+    function nearbyMarkers(e) {
             nearSpotsIndex = leafletKnn(lyrLocate);
             var nearestResult = nearSpotsIndex.nearest(e.latlng, 10);
-            return nearestResult.latlng === feature.latlng;
+            return nearestResult.latlng === L.Marker.latlng;
           }
 
   

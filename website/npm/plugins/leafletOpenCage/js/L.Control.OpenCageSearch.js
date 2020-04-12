@@ -170,6 +170,7 @@ var lyrFiltered;
      
      if (lyrFiltered) {
         mymap.removeLayer(lyrFiltered);
+        $("#listOfData li").remove();
               if (result.name) {
       
 
@@ -211,6 +212,8 @@ var lyrFiltered;
             },
             filter: zipFilter
           }).addTo(mymap);
+          mymap.fitBounds(lyrFiltered.getBounds());
+          mymap.setZoom(15);
         });
           
       } else {
@@ -250,7 +253,7 @@ var lyrFiltered;
 
               //  --------------iterate over array of racks found and print to sidebar info ------------
          
-          $("#listOfData").append("<li>" + feature.properties.rack_street_address + "</li>");
+          $("#listOfData").append("<li class='list-group-item'>" + feature.properties.rack_street_address + "</li>");
           sidebar.show();
           
             },
