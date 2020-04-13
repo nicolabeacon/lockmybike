@@ -206,7 +206,7 @@ var lyrFiltered;
 
               //  --------------iterate over array of racks found and print to sidebar info ------------
          
-          $("#listOfData").append("<li>" + feature.properties.rack_street_address + "</li>");
+          $("#listOfData").append("<li class='list-group-item'>" + "at the address"+ "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
           sidebar.show();
           
             },
@@ -253,7 +253,7 @@ var lyrFiltered;
 
               //  --------------iterate over array of racks found and print to sidebar info ------------
          
-          $("#listOfData").append("<li class='list-group-item'>" + feature.properties.rack_street_address + "</li>");
+          $("#listOfData").append("<li class='list-group-item'>" + "at the address"+ "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
           sidebar.show();
           
             },
