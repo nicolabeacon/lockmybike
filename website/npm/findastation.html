@@ -4,7 +4,7 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
@@ -72,21 +72,27 @@
     <!-- Title -->
 
     <!-- Body with map -->
+  <div class="container pt-5">
+  
+  <div class="row">
+  <div id="sidebar">
+    <button id="btnLocate" type="button" class="btn btn-outline-primary my-2">
+      Locate
+    </button>
 
-    <div id="sidebar">
-      <button id="btnLocate" type="button" class="btn btn-outline-primary my-2">
-        Locate
-      </button>
-      
-      <h5>We found a few stations near the address provided:  </h5>
-      <br />
-      <ul id="listOfData" class="list-group"></ul>
-      
-      <!-- Handling zip lookup -->
-     <span id="searchNow"></span>
-    </div>
+    <h5>We found a few stations near the address provided: </h5>
+    <br />
+    <ul id="listOfData" class="list-group"></ul>
 
-    <div id="map" class="col-md-12"></div>
+    <!-- Handling zip lookup -->
+    <span id="searchNow"></span>
+  </div>
+
+  <div id="map" class="col-md-12 col-lg-12 col-sm-12 ml-0"></div>
+  </div>
+  </div>  
+
+    
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

@@ -1,13 +1,20 @@
 // custom JS code
-var mymap
-var lyrOSM
-var lyrLocate
-var nearSpotsIndex
-var sidebar
-var leafletSearch
+var mymap;
+var lyrOSM;
+var lyrLocate;
+var sidebar;
+var leafletSearch;
 
 $(document).ready(function () {
-  mymap = L.map('map').setView([42.358918, -71.063828], 13)
+  
+  
+ // Instantiate a map layer thanks to Open Street Map
+  
+  mymap = L.map('map', {
+    maxZoom: 20,
+    minZoom: 6,
+    zoomControl: false
+}).setView([42.358918, -71.063828], 13);
   lyrOSM = L.tileLayer(
     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
     {
@@ -18,7 +25,25 @@ $(document).ready(function () {
       accessToken:
         'pk.eyJ1IjoibmljZW9sYTg4IiwiYSI6ImNrNmZpMTcwczF6Z24zbm4zeXhnbGZocngifQ.VBUYpku7fhmot35fpOp8fQ',
     }
-  ).addTo(mymap)
+  ).addTo(mymap);
+  
+   // add zoom control button where I want it to go
+  
+  L.control.zoom({
+    position: 'bottomleft'
+}).addTo(mymap);
+  
+    // button filters map based on text input
+
+  leafletSearch = L.Control.openCageSearch({
+    key: 'd7f2af1decc940898adba6b32b6a2e7d',
+    limit: 10,
+    placeholder:'Enter an address or zipcode',
+    collapsed:false,
+    position: 'topleft',
+  }).addTo(mymap);
+  
+  // create a sidebar
 
   sidebar = L.control.sidebar('sidebar', {
     position: 'left',
@@ -46,6 +71,10 @@ $(document).ready(function () {
     mymap.locate()
   })
 
+  
+  // add below if lyrLocate || lyrFiltered exist remove them and do the following, if not do show near markers
+  
+  
   mymap.on('locationfound', function (e) {
     console.log(e)
 
@@ -55,10 +84,10 @@ $(document).ready(function () {
       //add custom icons
       var rackIcon = L.icon({
         iconUrl: '../images/bikeRing.png',
-        iconSize: [60, 33.6],
+        iconSize: [70, 39.2],
       })
 
-      L.geoJson(data, {
+     lyrLocate = L.geoJson(data, {
         pointToLayer: function (feature, latlng) {
           return L.marker(latlng, {
             icon: rackIcon,
@@ -67,10 +96,14 @@ $(document).ready(function () {
         onEachFeature: function (feature, layer) {
           layer.bindPopup(
             'Address:' + '&nbsp' + feature.properties.rack_street_address
-          )
+          );
+          $("#listOfData").append("<li class='list-group-item'>" + "at the address"+ "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
+          sidebar.show();
         },
         filter: nearbyMarkers,
-      }).addTo(mymap)
+      }).addTo(mymap);
+      mymap.fitBounds(lyrLocate.getBounds());
+      mymap.setZoom(13);
 
       function nearbyMarkers(feature) {
         var found = false
@@ -90,17 +123,16 @@ $(document).ready(function () {
   mymap.on('locationerror', function (e) {
     console.log(e)
     alert('the location was not found')
-  })
+  });
 
   //////////////////////////////////////////
+  
+  // click on li opens tooltip on marker with that address
+  
+    $("ul#listOfData").click(function (e) {
+    console.log(e);
+  });
 
-  // button filters map based on text input
-
-  leafletSearch = L.Control.openCageSearch({
-    key: 'd7f2af1decc940898adba6b32b6a2e7d',
-    limit: 10,
-    position: 'topleft',
-  }).addTo(mymap)
 })
 
 // end of document ready function

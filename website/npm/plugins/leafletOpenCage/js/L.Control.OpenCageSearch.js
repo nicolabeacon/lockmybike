@@ -180,7 +180,7 @@ var lyrFiltered;
           //add custom icons
           var rackIcon = L.icon({
             iconUrl: '../images/bikeRing.png',
-            iconSize: [60, 33.6]
+            iconSize: [70, 39.2]
           });
 
           var matchingRacks = data.features.filter(function(rack) {
@@ -213,7 +213,7 @@ var lyrFiltered;
             filter: zipFilter
           }).addTo(mymap);
           mymap.fitBounds(lyrFiltered.getBounds());
-          mymap.setZoom(15);
+          mymap.setZoom(13);
         });
           
       } else {
@@ -227,7 +227,7 @@ var lyrFiltered;
           //add custom icons
           var rackIcon = L.icon({
             iconUrl: '../images/bikeRing.png',
-            iconSize: [60, 33.6]
+            iconSize: [70, 39.2]
           });
 
           var matchingRacks = data.features.filter(function(rack) {
