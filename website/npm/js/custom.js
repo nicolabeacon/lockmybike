@@ -5,6 +5,7 @@ var lyrLocate;
 var sidebar;
 var leafletSearch;
 
+
 $(document).ready(function () {
   
   
@@ -49,7 +50,7 @@ $(document).ready(function () {
     position: 'left',
   })
 
-  mymap.addControl(sidebar)
+  mymap.addControl(sidebar);
 
   // add a custom button to toggle sidebar
 
@@ -57,41 +58,51 @@ $(document).ready(function () {
     'fa-arrows-alt-h',
     function () {
       if (sidebar.isVisible()) {
-        sidebar.hide()
+        sidebar.hide();
       } else {
-        sidebar.show()
+        sidebar.show();
       }
     },
-    'look for stations near you'
-  ).addTo(mymap)
-
-  // find your location adding a circle if button "locate" is pressed; also, handle location failure
-
-  $('#btnLocate').click(function () {
-    mymap.locate()
-  })
-
+    'toggle the sidebar'
+  ).addTo(mymap);
   
-  // add below if lyrLocate || lyrFiltered exist remove them and do the following, if not do show near markers
+  // add a location button
+  
+    L.easyButton(
+    'fas fa-crosshairs',
+    function () {
+   mymap.locate();
+    },
+    'look for stations near you'
+  ).addTo(mymap);
+  
+  // enable sidebar closing when on mobile device
+  
+  $($('#btnCloseMobileSidebar')).click(function () {
+    sidebar.hide();
+  });
+  
+  // add below if lyrLocate && || lyrFiltered exist remove them and do the following, if not do show near markers
   
   
   mymap.on('locationfound', function (e) {
-    console.log(e)
+    console.log(e);
 
     $.getJSON('../bikedata.geojson', function (data) {
-      const nearestResults = leafletKnn(L.geoJson(data)).nearest(e.latlng, 10)
+      const nearestResults = leafletKnn(L.geoJson(data)).nearest(e.latlng, 10);
 
       //add custom icons
       var rackIcon = L.icon({
         iconUrl: '../images/bikeRing.png',
         iconSize: [70, 39.2],
-      })
+        popupAnchor: [7, -9],
+      });
 
      lyrLocate = L.geoJson(data, {
         pointToLayer: function (feature, latlng) {
           return L.marker(latlng, {
             icon: rackIcon,
-          })
+          });
         },
         onEachFeature: function (feature, layer) {
           layer.bindPopup(
@@ -106,23 +117,23 @@ $(document).ready(function () {
       mymap.setZoom(13);
 
       function nearbyMarkers(feature) {
-        var found = false
+        var found = false;
         for (let i = 0; i < nearestResults.length; i++) {
-          const nearestResult = nearestResults[i]
+          const nearestResult = nearestResults[i];
 
-          if (found) return true
+          if (found) return true;
 
           found =
             nearestResult.lat == feature.properties.lat &&
-            nearestResult.lon == feature.properties.long
+            nearestResult.lon == feature.properties.long;
         }
-      }
-    })
-  })
+      } // end of filtering function narbyMarkers
+    });
+  });
 
   mymap.on('locationerror', function (e) {
     console.log(e)
-    alert('the location was not found')
+    alert('the location was not found');
   });
 
   //////////////////////////////////////////
@@ -133,6 +144,6 @@ $(document).ready(function () {
     console.log(e);
   });
 
-})
+});
 
 // end of document ready function
