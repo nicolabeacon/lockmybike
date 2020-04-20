@@ -13,10 +13,10 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 
     <!-- easy button plugin JS -->
-    <script src="plugins/easy-button.js" crossorigin="anonymous"></script>
+    <script src="/plugins/easy-button.js" crossorigin="anonymous"></script>
 
     <!-- Leaflet sidebar plugin JS -->
-    <script src="plugins/L.Control.Sidebar.js" crossorigin="anonymous"></script>
+    <script src="/plugins/L.Control.Sidebar.js" crossorigin="anonymous"></script>
 
     <!-- Leaflet OpenCage geocoder plugin JS -->
     <script src="plugins/leafletOpenCage/js/L.Control.OpenCageSearch.js" crossorigin="anonymous"></script>
@@ -41,7 +41,7 @@
 
     <!-- Personalized CSS -->
     <link rel="stylesheet" href="css/styles.css" crossorigin="anonymous" />
-    <title>Find a station for me</title>
+    <title>Lock my bike, now</title>
   </head>
 
   <body>
@@ -56,14 +56,14 @@
           <li class="nav-item">
             <a class="nav-link" href="/index.html">Home</a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/findastation.html">Find a Station<span class="sr-only">(current)</span></a>
+          <li class="nav-item">
+            <a class="nav-link" href="/findastation.html">Find a Station</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/suggestastation.html">Suggest a Station</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/about.html">About</a>
+            <a class="nav-link active" href="/about.html">About<span class="sr-only">(current)</span></a>
           </li>
         </ul>
       </div>
@@ -71,44 +71,29 @@
 
     <!-- Title -->
 
-    <!-- Body with map -->
-    <div class="container pt-4">
-      
-      <div class="row pb-3">
-   <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-     <p class="text-left">Locate any publicly available bike rack for the city of Boston!
-     <br> You can either enter and address or allow Lock My Bike to know your location and indicate parking near you.
-     <br>
-     <br> Don't forget to visit the <a href="/suggestastation.html">Suggest a Station</a> page if you would like to see a station added to our database, or request a review of an existing one</p>
-   </div>
+    <!-- Body -->
 
- </div>
-
+    <div class="container mt-7">
       <div class="row">
-        <div id="sidebar">
-
-          <button id="btnCloseMobileSidebar" type="button" class="btn btn-light">Close Sidebar</button>
-
-          <h5>We found a few stations near the address provided: </h5>
-          <br />
-          <ul id="listOfData" class="list-group"></ul>
-
-          <!-- Handling zip lookup -->
-          <span id="searchNow"></span>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+          <img src="images/bikeRingAbout.png" class="img-fluid rounded mx-auto d-block text-center" max-width="100%" height="auto">
         </div>
-
-        <div id="map" class="col-md-12 col-lg-12 col-sm-12 ml-0"></div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+         <p class="text-center">If you like what you see, follow us on Facebook!</p>
+        </div>
       </div>
     </div>
+    <!-- end of container -->
 
-
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS a font awesome -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/ef88f3b393.js" crossorigin="anonymous"></script>
     <!-- Custom JS -->
-    <script src="/js/custom.js" crossorigin="anonymous"></script>
+    <script src="js/custom.js" crossorigin="anonymous" type="modules"></script>
   </body>
 
 </html>
