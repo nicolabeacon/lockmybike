@@ -131,6 +131,17 @@ $(document).ready(function() {
         }).addTo(mymap);
         mymap.fitBounds(lyrLocate.getBounds());
         mymap.setZoom(13);
+        
+   // assign an id to every li shown in the sidebar    
+        if ($("#listOfData li")) {
+   $("#listOfData li").each(function(i) {
+     $(this).attr('id',i + 1);
+   });
+ } // end of if statement
+ 
+          $("#listOfData li").click(function(){
+    alert('the li with id:' + " " + $(this).attr('id') + " " +  'has been pressed');
+});
 
         function nearbyMarkers(feature) {
           var found = false;
@@ -173,6 +184,17 @@ $(document).ready(function() {
         }).addTo(mymap);
         mymap.fitBounds(lyrLocate.getBounds());
         mymap.setZoom(13);
+        
+   // assign an id to every li shown in the sidebar    
+  if ($("#listOfData li")) {
+   $("#listOfData li").each(function(i) {
+     $(this).attr('id',i + 1);
+   });
+ } // end of if statement
+ 
+           $("#listOfData li").click(function(){
+    alert('the li with id:' + " " + $(this).attr('id') + " " +  'has been pressed');
+});
 
         function nearbyMarkers(feature) {
           var found = false;
@@ -187,11 +209,9 @@ $(document).ready(function() {
           }
         } // end of filtering function narbyMarkers
       }); // end of loading data to the map function
-    } // end of else statement, no prior layer was found 
-
-
-
-  }); // end of location found 
+    } // end of else statement, no prior layer was found
+  }); // end of location found
+  
 
   // handle a location error
 
@@ -200,15 +220,4 @@ $(document).ready(function() {
   });
 
 
-
-  //////////////////////////////////////////
-
-  // click on li opens tooltip on marker with that address
-
-  $("ul#listOfData").click(function(e) {
-    console.log(e);
-  });
-
-});
-
-// end of document ready function
+}); // end of document ready function
