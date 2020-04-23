@@ -1,9 +1,10 @@
 // custom JS code
-var mymap;
+var mymap; 
 var lyrOSM;
 var lyrLocate;
 var sidebar;
 var leafletSearch;
+
 
 
 $(document).ready(function() {
@@ -85,6 +86,7 @@ $(document).ready(function() {
 
   mymap.on('locationfound', function(e) {
 
+// look for layers, if they exist - clear them and then add a new one
 
     if ((mymap.hasLayer(lyrLocate) && mymap.hasLayer(lyrFiltered)) || (mymap.hasLayer(lyrLocate) || mymap.hasLayer(lyrFiltered))) {
 
@@ -100,14 +102,13 @@ $(document).ready(function() {
       maxZoom: 18,
       id: 'mapbox/streets-v11',
       accessToken: 'pk.eyJ1IjoibmljZW9sYTg4IiwiYSI6ImNrNmZpMTcwczF6Z24zbm4zeXhnbGZocngifQ.VBUYpku7fhmot35fpOp8fQ',
-    }
-  ).addTo(mymap);
+    }).addTo(mymap);
       
-
+// load markers from my geojson file
       $.getJSON('../bikedata.geojson', function(data) {
         const nearestResults = leafletKnn(L.geoJson(data)).nearest(e.latlng, 10);
-
-        //add custom icons
+   
+//add custom icons
         var rackIcon = L.icon({
           iconUrl: '../images/bikeRing.png',
           iconSize: [70, 39.2],
@@ -118,13 +119,14 @@ $(document).ready(function() {
           pointToLayer: function(feature, latlng) {
             return L.marker(latlng, {
               icon: rackIcon,
+              riseOnHover: true,
             });
           },
           onEachFeature: function(feature, layer) {
             layer.bindPopup(
-              'Address:' + '&nbsp' + feature.properties.rack_street_address
+              'Address:' + '&nbsp' + feature.properties.rack_street_address + (L.marker.getLatLng()).distanceTo(mymap.locate().latLng) 
             );
-            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
+            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" +  "</li>");
             sidebar.show();
           },
           filter: nearbyMarkers,
@@ -132,17 +134,13 @@ $(document).ready(function() {
         mymap.fitBounds(lyrLocate.getBounds());
         mymap.setZoom(13);
         
-   // assign an id to every li shown in the sidebar    
+// assign an id to every li shown in the sidebar    
         if ($("#listOfData li")) {
    $("#listOfData li").each(function(i) {
      $(this).attr('id',i + 1);
    });
  } // end of if statement
  
-          $("#listOfData li").click(function(){
-    alert('the li with id:' + " " + $(this).attr('id') + " " +  'has been pressed');
-});
-
         function nearbyMarkers(feature) {
           var found = false;
           for (let i = 0; i < nearestResults.length; i++) {
@@ -171,6 +169,7 @@ $(document).ready(function() {
           pointToLayer: function(feature, latlng) {
             return L.marker(latlng, {
               icon: rackIcon,
+              riseOnHover: true,
             });
           },
           onEachFeature: function(feature, layer) {
