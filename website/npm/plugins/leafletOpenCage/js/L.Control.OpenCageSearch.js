@@ -160,7 +160,8 @@
          icon: L.icon({
            iconUrl: '../images/iconBike.png',
            iconSize: [30, 30],
-           popupAnchor: [7, -9]
+           popupAnchor: [7, -9],
+           riseOnHover: true,
          })
        }).addTo(this._map).bindPopup('Address: ' + result.name).openPopup();
 
@@ -211,7 +212,8 @@
              lyrFiltered = L.geoJson(data, {
                pointToLayer: function(feature, latlng) {
                  return L.marker(latlng, {
-                   icon: rackIcon
+                   icon: rackIcon,
+                   riseOnHover: true,
                  });
                },
                onEachFeature: function(feature, layer) {
@@ -260,7 +262,8 @@
              lyrFiltered = L.geoJson(data, {
                pointToLayer: function(feature, latlng) {
                  return L.marker(latlng, {
-                   icon: rackIcon
+                   icon: rackIcon,
+                   riseOnHover: true,
                  });
                },
                onEachFeature: function(feature, layer) {

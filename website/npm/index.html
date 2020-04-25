@@ -42,6 +42,10 @@
     <!-- Personalized CSS -->
     <link rel="stylesheet" href="css/styles.css" crossorigin="anonymous" />
     <title>Lock my bike, now</title>
+    
+    <!-- Import google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    
   </head>
 
   <body>
@@ -73,14 +77,14 @@
 
     <!-- Body -->
 
-    <div class="container ml-0 mt-5">
+    <div class="container-fluid ml-0 mt-5">
       <div class="row">
-        <div class="col-4 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-4">
           <img src="images/homePic2.png" class="img-fluid float-left" max-width="100%" height="auto">
         </div>
 
 
-        <div class="col-8 col-sm-8 col-md-8 col-lg-8">
+        <div id="homeBlock" class="col-8">
           <p>Are you a rider? Ever worried where to lock your bike but are not familiar with the area? Lock My Bike is here for you.
             <br>
             <br>
@@ -99,13 +103,22 @@
           </p>
         </div>
       </div>
+
+      <!-- end of first row -->
+
+      <div class="row mt-5">
+        <section id="introSection" class="text-right col-12 mr-5 pt-4">
+          <p>Looking for a place where to lock your bike?</p>
+        </section>
+      </div>
     </div>
+
     
     <footer class="footer">
-   <div class="container">
-     <span class="text-muted"> I am Lock My Bike's sticky footer</span>
-   </div>
- </footer>
+      <div class="text-right container mr-1">
+        <span class="text-muted">Powered by Leaflet, thought out by me &COPY2020</span>
+      </div>
+    </footer>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS a font awesome -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

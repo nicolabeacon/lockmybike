@@ -4,6 +4,8 @@ var lyrOSM;
 var lyrLocate;
 var sidebar;
 var leafletSearch;
+var content;
+var matchLi;
 
 
 
@@ -124,9 +126,9 @@ $(document).ready(function() {
           },
           onEachFeature: function(feature, layer) {
             layer.bindPopup(
-              'Address:' + '&nbsp' + feature.properties.rack_street_address + (L.marker.getLatLng()).distanceTo(mymap.locate().latLng) 
+              'Address:' + '&nbsp' + feature.properties.rack_street_address
             );
-            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" +  "</li>");
+            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + "&nbsp" + feature.properties.zip + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" +  "</li>");
             sidebar.show();
           },
           filter: nearbyMarkers,
@@ -176,7 +178,7 @@ $(document).ready(function() {
             layer.bindPopup(
               'Address:' + '&nbsp' + feature.properties.rack_street_address
             );
-            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
+            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + "&nbsp" + feature.properties.zip + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
             sidebar.show();
           },
           filter: nearbyMarkers,
@@ -192,7 +194,13 @@ $(document).ready(function() {
  } // end of if statement
  
            $("#listOfData li").click(function(){
-    alert('the li with id:' + " " + $(this).attr('id') + " " +  'has been pressed');
+           content = $(this).text();
+           matchLi = content.match(/(?<=address)(.*)(?=you will)/);
+     
+    // alert('the li with id:' + " " + $(this).attr('id') + " " +  'has been pressed');
+       $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+ matchLi, function(data){
+       console.log(data);
+    });
 });
 
         function nearbyMarkers(feature) {
