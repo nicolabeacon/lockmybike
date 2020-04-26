@@ -145,33 +145,13 @@
        var parsedResults = result.name.match(/^.*(?<zipCode>\d{5}).*$/);
        var zipCode = parsedResults && parsedResults.groups && parsedResults.groups.zipCode;
 
-       if (result.bounds) {
-         this._map.fitBounds(result.bounds);
-         this._map.setZoom(15);
-       } else {
-         this._map.panTo(result.center);
-       }
-
-       if (this._geocodeMarker) {
-         this._map.removeLayer(this._geocodeMarker);
-       }
-
-       this._geocodeMarker = L.marker(result.center, {
-         icon: L.icon({
-           iconUrl: '../images/iconBike.png',
-           iconSize: [30, 30],
-           popupAnchor: [7, -9],
-           riseOnHover: true,
-         })
-       }).addTo(this._map).bindPopup('Address: ' + result.name).openPopup();
-
 
        ////// if lyrFiltered defined mymap.removeLayer(lyrFiltered) then add it again
 
        /////// else add it
 
            if ((mymap.hasLayer(lyrLocate) && mymap.hasLayer(lyrFiltered)) || (mymap.hasLayer(lyrLocate) || mymap.hasLayer(lyrFiltered))) {
-
+            
       mymap.eachLayer(function(layer) {
         mymap.removeLayer(layer);
       });
@@ -185,6 +165,28 @@
       accessToken: 'pk.eyJ1IjoibmljZW9sYTg4IiwiYSI6ImNrNmZpMTcwczF6Z24zbm4zeXhnbGZocngifQ.VBUYpku7fhmot35fpOp8fQ',
     }
   ).addTo(mymap);
+        
+           /////////
+                   if (result.bounds) {
+                     this._map.fitBounds(result.bounds);
+                     this._map.setZoom(15);
+                   } else {
+                     this._map.panTo(result.center);
+                   }
+
+                   if (this._geocodeMarker) {
+                     this._map.removeLayer(this._geocodeMarker);
+                   }
+
+                   this._geocodeMarker = L.marker(result.center, {
+                     icon: L.icon({
+                       iconUrl: '../images/iconBike.png',
+                       iconSize: [30, 30],
+                       popupAnchor: [7, -9],
+                       riseOnHover: true,
+                     })
+                   }).addTo(this._map).bindPopup('Address: ' + result.name).openPopup();
+                   //////////////////
          
          if (result.name) {
 
@@ -218,10 +220,10 @@
                },
                onEachFeature: function(feature, layer) {
                  layer.bindPopup(
-                   'Address:' + '&nbsp' + feature.properties.rack_street_address + '&nbsp' + feature.properties.zip
+                   'Address:' + '&nbsp' + feature.properties.rack_street_address
                  );
 
-                 //  --------------iterate over array of racks found and print to sidebar info ------------
+                 // iterate over array of racks found and print to sidebar info 
 
                  $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
                  sidebar.show();
@@ -238,6 +240,28 @@
          }
        } // end of if lyrLocate found remove layer and create new one
        else {
+        
+             if (result.bounds) {
+                     this._map.fitBounds(result.bounds);
+                     this._map.setZoom(15);
+                   } else {
+                     this._map.panTo(result.center);
+                   }
+
+                   if (this._geocodeMarker) {
+                     this._map.removeLayer(this._geocodeMarker);
+                   }
+
+                   this._geocodeMarker = L.marker(result.center, {
+                     icon: L.icon({
+                       iconUrl: '../images/iconBike.png',
+                       iconSize: [30, 30],
+                       popupAnchor: [7, -9],
+                       riseOnHover: true,
+                     })
+                   }).addTo(this._map).bindPopup('Address: ' + result.name).openPopup();
+        
+        
          if (result.name) {
            // TODO validate we have a valid US zipCode
 
@@ -268,10 +292,10 @@
                },
                onEachFeature: function(feature, layer) {
                  layer.bindPopup(
-                   'Address:' + '&nbsp' + feature.properties.rack_street_address + '&nbsp' + feature.properties.zip
+                   'Address:' + '&nbsp' + feature.properties.rack_street_address
                  );
 
-                 //  --------------iterate over array of racks found and print to sidebar info ------------
+                 // iterate over array of racks found and print to sidebar info
 
                  $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
                  sidebar.show();

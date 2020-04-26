@@ -4,6 +4,8 @@ var lyrOSM;
 var lyrLocate;
 var sidebar;
 var leafletSearch;
+var rackIcon;
+var herenow;
 var content;
 var matchLi;
 
@@ -48,7 +50,7 @@ $(document).ready(function() {
 
   sidebar = L.control.sidebar('sidebar', {
     position: 'left',
-  })
+  });
 
   mymap.addControl(sidebar);
 
@@ -82,13 +84,21 @@ $(document).ready(function() {
     'look for stations near you'
   ).addTo(mymap);
 
-  // add below if lyrLocate && || lyrFiltered exist remove them and do the following, if not do show near markers
+  
+  // create markers icons to reuse
+  
+rackIcon = L.icon({
+          iconUrl: '../images/bikeRing.png',
+          iconSize: [70, 39.2],
+          popupAnchor: [7, -9],
+        });
+         
 
   // success, a location is found
 
   mymap.on('locationfound', function(e) {
 
-// look for layers, if they exist - clear them and then add a new one
+  // look for layers, if they exist - clear them and then add a new one
 
     if ((mymap.hasLayer(lyrLocate) && mymap.hasLayer(lyrFiltered)) || (mymap.hasLayer(lyrLocate) || mymap.hasLayer(lyrFiltered))) {
 
@@ -98,6 +108,7 @@ $(document).ready(function() {
 
       $("#listOfData li").remove();
       
+      
         lyrOSM = L.tileLayer(
     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -105,19 +116,25 @@ $(document).ready(function() {
       id: 'mapbox/streets-v11',
       accessToken: 'pk.eyJ1IjoibmljZW9sYTg4IiwiYSI6ImNrNmZpMTcwczF6Z24zbm4zeXhnbGZocngifQ.VBUYpku7fhmot35fpOp8fQ',
     }).addTo(mymap);
+        
+ // display bike icon on my current location       
+        
+           herenow = L.marker([e.latitude, e.longitude], {
+             icon: L.icon({
+               iconUrl: '../images/iconBike.png',
+               iconSize: [30, 30],
+               popupAnchor: [7, -9],
+               riseOnHover: true,
+             })
+           }).addTo(mymap).bindPopup('You are here!').openPopup();
       
 // load markers from my geojson file
       $.getJSON('../bikedata.geojson', function(data) {
         const nearestResults = leafletKnn(L.geoJson(data)).nearest(e.latlng, 10);
    
-//add custom icons
-        var rackIcon = L.icon({
-          iconUrl: '../images/bikeRing.png',
-          iconSize: [70, 39.2],
-          popupAnchor: [7, -9],
-        });
-
         lyrLocate = L.geoJson(data, {
+          
+        
           pointToLayer: function(feature, latlng) {
             return L.marker(latlng, {
               icon: rackIcon,
@@ -128,7 +145,7 @@ $(document).ready(function() {
             layer.bindPopup(
               'Address:' + '&nbsp' + feature.properties.rack_street_address
             );
-            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + "&nbsp" + feature.properties.zip + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" +  "</li>");
+            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + "&nbsp" + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" +  "</li>");
             sidebar.show();
           },
           filter: nearbyMarkers,
@@ -142,6 +159,13 @@ $(document).ready(function() {
      $(this).attr('id',i + 1);
    });
  } // end of if statement
+ 
+            $("#listOfData li").click(function(){
+           content = $(this).text();
+           matchLi = content.match(/(?<=address)(.*)(?=you will)/);
+          alert('the li with id:' + " " + $(this).attr('id') + " " +  'has been pressed');
+     
+});
  
         function nearbyMarkers(feature) {
           var found = false;
@@ -157,15 +181,21 @@ $(document).ready(function() {
         } // end of filtering function narbyMarkers
       }); // end of loading data to the map function
     } else {
+      
+ // display bike icon on my current location          
+      
+           herenow = L.marker([e.latitude, e.longitude], {
+             icon: L.icon({
+               iconUrl: '../images/iconBike.png',
+               iconSize: [30, 30],
+               popupAnchor: [7, -9],
+               riseOnHover: true,
+             })
+           }).addTo(mymap).bindPopup('You are here!').openPopup();
+      
       $.getJSON('../bikedata.geojson', function(data) {
         const nearestResults = leafletKnn(L.geoJson(data)).nearest(e.latlng, 10);
-
-        //add custom icons
-        var rackIcon = L.icon({
-          iconUrl: '../images/bikeRing.png',
-          iconSize: [70, 39.2],
-          popupAnchor: [7, -9],
-        });
+   
 
         lyrLocate = L.geoJson(data, {
           pointToLayer: function(feature, latlng) {
@@ -178,7 +208,7 @@ $(document).ready(function() {
             layer.bindPopup(
               'Address:' + '&nbsp' + feature.properties.rack_street_address
             );
-            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + "&nbsp" + feature.properties.zip + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
+            $("#listOfData").append("<li class='list-group-item'>" + "at the address" + "&nbsp" + feature.properties.rack_street_address + "&nbsp" + " you will find" + "&nbsp" + feature.properties.qty + "&nbsp" + "spot/s" + "</li>");
             sidebar.show();
           },
           filter: nearbyMarkers,
@@ -196,11 +226,8 @@ $(document).ready(function() {
            $("#listOfData li").click(function(){
            content = $(this).text();
            matchLi = content.match(/(?<=address)(.*)(?=you will)/);
-     
-    // alert('the li with id:' + " " + $(this).attr('id') + " " +  'has been pressed');
-       $.get(location.protocol + '//nominatim.openstreetmap.org/search?format=json&q='+ matchLi, function(data){
-       console.log(data);
-    });
+          alert('the li with id:' + " " + $(this).attr('latitude') + " " +  'has been pressed');
+
 });
 
         function nearbyMarkers(feature) {
