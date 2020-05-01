@@ -13,6 +13,8 @@ Users will be able to submit forms where they can suggest the addition of new bi
 
 The project relies on geomapping visuals powered by Leaflet (https://leafletjs.com/); a Javascript library that enables developers to display markers/shapes on a map.
 
+Thanks to the leaflet locate method, paired with the Leaflet-KNN plugin (https://github.com/mapbox/leaflet-knn), I was able to return an index of k-nearest neigboring bike racks compared to the current user's location.
+
 For the styling of this work I used Bootstrap (https://getbootstrap.com/), which thorough documentation makes styling decision a creative endeavor, and not a taxing coding one.
 
 Another technology I am thankful for is Jquery (https://jquery.com/), which makes Javascript work a lot easier.
