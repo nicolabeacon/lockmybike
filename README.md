@@ -15,6 +15,8 @@ The project relies on geomapping visuals powered by Leaflet (https://leafletjs.c
 
 Thanks to the leaflet locate method, paired with the Leaflet-KNN plugin (https://github.com/mapbox/leaflet-knn), I was able to return an index of k-nearest neigboring bike racks compared to the current user's location.
 
+Lastly, the Liedman's Leaflet routing machine plugin enabled the addition of a routing control, fully responsive, to give users both direction from one marker to an address searched with the OpenCage geocoder; and from one of the nearest markers to the user's current location.
+
 For the styling of this work I used Bootstrap (https://getbootstrap.com/), which thorough documentation makes styling decision a creative endeavor, and not a taxing coding one.
 
 Another technology I am thankful for is Jquery (https://jquery.com/), which makes Javascript work a lot easier.
